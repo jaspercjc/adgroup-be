@@ -24,4 +24,6 @@ Route::group(['middleware' => ['guest']], function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/me', [App\Http\Controllers\MeController::class, 'show'])->name('me.show');
     Route::post('/auth/logout', App\Http\Controllers\Auth\Logout::class)->name('auth.logout');
+
+    Route::resource("/ip-assignments", \App\Http\Controllers\IpAssignmentController::class);
 });
