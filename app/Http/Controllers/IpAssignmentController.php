@@ -14,9 +14,16 @@ class IpAssignmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $perPage = $request->query('rowsPerPage', 15);
+
+        $data = IpAssignment::sortBy($request)
+            ->searchBy($request)
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
     /**

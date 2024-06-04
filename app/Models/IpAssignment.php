@@ -13,4 +13,21 @@ class IpAssignment extends Model
         'ip_address',
         'assignment',
     ];
+
+    public function scopeSearchBy($query, $request)
+    {
+        if ($request->has('search') && !empty($request->search)) {
+            $term = $request->search;
+            $query->where('ip_address', 'LIKE', '%'.$term.'%')
+                ->orWhere('assignment', 'LIKE', '%'.$term.'%');
+        }
+    }
+
+    public function scopeSortBy($query, $request)
+    {
+        if ($request->has('sortBy')) {
+            $direction = $request->has('descending') && $request->descending == 'true' ? 'DESC' : 'ASC';
+            $query = $query->orderBy($request->sortBy, $direction);
+        }
+    }
 }
