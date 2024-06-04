@@ -7,24 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Sortable;
 use App\Traits\Searchable;
 
-class IpAssignment extends Model
+class ActivityLog extends Model
 {
     use HasFactory;
     use Sortable;
     use Searchable;
 
     protected $fillable = [
-        'ip_address',
-        'assignment',
+        'action',
+        'user_id',
     ];
 
     protected $searchableFields = [
-        'ip_address',
-        'assignment'
+        'action',
     ];
 
-    public function logs()
+    public function loggable()
     {
-        return $this->morphMany(ActivityLog::class, 'loggable');
+        return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

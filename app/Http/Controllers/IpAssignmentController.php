@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\CreateIp;
+use App\Actions\UpdateIp;
 use App\Models\IpAssignment;
 use App\Http\Requests\StoreIpAssignmentRequest;
 use App\Http\Requests\UpdateIpAssignmentRequest;
@@ -56,10 +57,11 @@ class IpAssignmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateIpAssignmentRequest $request, IpAssignment $ipAssignment)
+    public function update(UpdateIpAssignmentRequest $request, IpAssignment $ipAssignment, UpdateIp $updateIp)
     {
         $input = $request->validated();
-        $ipAssignment->update($input);
+        $ipAssignment = $updateIp->handle($ipAssignment, $input);
+
         return new JsonResponse(
             [
                 'ip_assignment' => IpAssignmentResource::make($ipAssignment),

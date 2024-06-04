@@ -7,18 +7,19 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class CreateIp
+class UpdateIp
 {
     use AsAction;
 
-    public function handle(array $data): IpAssignment
+    public function handle(IpAssignment $ip, array $data): IpAssignment
     {
         DB::beginTransaction();
         try {
-            $ip = IpAssignment::create($data);
+            $oldData = $ip->toArray();
+            $ip->update($data);
 
             $ip->logs()->create([
-                'action' => 'Created new IP record '.$ip->ip_address.'.',
+                'action' => 'Updated IP record '.$ip->ip_address.' assignment from '.$oldData['assignment'].' to '.$ip->assignment.'.',
                 'user_id' => auth()->id(),
             ]);
 
@@ -28,7 +29,6 @@ class CreateIp
         }
         DB::commit();
 
-        $ip->refresh();
         return $ip;
     }
 }

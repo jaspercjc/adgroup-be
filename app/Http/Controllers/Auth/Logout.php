@@ -13,6 +13,11 @@ class Logout extends Controller
     {
         $user = Auth::user();
 
+        $user->logs()->create([
+            'action' => 'Logged out.',
+            'user_id' => $user->id,
+        ]);
+
         $user->tokens()->delete();
         auth()->guard('web')->logout();
 

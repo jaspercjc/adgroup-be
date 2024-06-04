@@ -30,6 +30,11 @@ class CreateToken
             
             $token = $user->createToken('app')->plainTextToken;
 
+            $user->logs()->create([
+                'action' => 'Logged in.',
+                'user_id' => $user->id,
+            ]);
+
             return new JsonResponse(['token' => $token], JsonResponse::HTTP_OK);
         } catch (\Throwable $e) {
             return new JsonResponse([

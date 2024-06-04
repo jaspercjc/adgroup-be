@@ -26,4 +26,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/auth/logout', App\Http\Controllers\Auth\Logout::class)->name('auth.logout');
 
     Route::resource("/ip-assignments", \App\Http\Controllers\IpAssignmentController::class);
+    Route::resource("/activity-logs", \App\Http\Controllers\ActivityLogController::class);
 });
