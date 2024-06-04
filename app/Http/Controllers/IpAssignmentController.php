@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\CreateIp;
 use App\Models\IpAssignment;
 use App\Http\Requests\StoreIpAssignmentRequest;
+use App\Http\Requests\UpdateIpAssignmentRequest;
+use App\Http\Resources\IpAssignmentResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +25,7 @@ class IpAssignmentController extends Controller
             ->paginate($perPage)
             ->withQueryString();
 
-        return new JsonResponse($data, Response::HTTP_OK);
+        return IpAssignmentResource::collection($data);
     }
 
     /**
@@ -36,7 +38,7 @@ class IpAssignmentController extends Controller
         
         return new JsonResponse(
             [
-                'ip' => $ip,
+                'ip' => IpAssignmentResource::make($ip),
                 'message' => 'IP Assignment created successfully.',
             ],
             Response::HTTP_CREATED
@@ -54,9 +56,17 @@ class IpAssignmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, IpAssignment $ipAssignment)
+    public function update(UpdateIpAssignmentRequest $request, IpAssignment $ipAssignment)
     {
-        //
+        $input = $request->validated();
+        $ipAssignment->update($input);
+        return new JsonResponse(
+            [
+                'ip_assignment' => IpAssignmentResource::make($ipAssignment),
+                'message' => 'IP Assignment updated successfully.',
+            ],
+            Response::HTTP_OK
+        );
     }
 
     /**
