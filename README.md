@@ -1,6 +1,6 @@
 # IP Address Management Solution - BE
 
-This is the front end of the project.
+This is the backend of the project.
 
 [Frontend](https://github.com/jaspercjc/adgroup-fe) - for the frontend.
 
