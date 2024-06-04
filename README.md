@@ -1,4 +1,4 @@
-# IP Address Management Solution - FE
+# IP Address Management Solution - BE
 
 This is the front end of the project.
 
